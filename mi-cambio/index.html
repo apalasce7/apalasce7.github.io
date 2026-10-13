@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi Cambio · Mis hábitos</title><meta name="theme-color" content="#184e42">
+<style>
+:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#233b35;background:#f4f7f3}
+*{box-sizing:border-box}body{margin:0}main{max-width:680px;padding:20px 17px 65px;margin:auto}
+h1{font-size:29px;letter-spacing:-1px;margin:0 0 3px}h2{font-size:17px;margin:0 0 10px}
+p{line-height:1.5}small,.muted{color:#658078;font-size:13px}.hero{background:#184e42;color:#fff;padding:23px;border-radius:23px;margin-top:20px}
+.hero small{color:#e0f3e9}.number{font-size:65px;font-weight:800;letter-spacing:-3px;margin:8px 0 13px}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:13px;padding:13px 15px;font-weight:750;min-height:46px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d69a56;outline-offset:2px}
+.big{width:100%;background:#fff;color:#184e42;font-size:19px;padding:18px}
+.under{background:transparent;color:#e2efe8;font-size:13px;text-decoration:underline}
+.box{background:#fff;border:1px solid #dde6df;border-radius:18px;padding:18px;margin-top:15px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-top:12px}
+.metric{background:#fff;border-radius:16px;padding:14px;border:1px solid #dce6df}
+.metric b{display:block;font-size:24px}.metric small{font-size:12px}
+label{font-size:13px;font-weight:650;display:block;margin:13px 0 6px}
+input,select,textarea{width:100%;border:1px solid #c5d6c9;border-radius:12px;padding:12px;min-height:46px;background:#fff;color:#20362f;font-size:16px}
+textarea{min-height:160px;resize:vertical;font-size:13px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.primary{background:#184e42;color:#fff}.secondary{background:#e6f0e7;color:#194d3e}
+.warn{color:#88422b;font-size:13px}.row{padding:11px 0;border-bottom:1px solid #eef1ee;display:flex;justify-content:space-between;gap:15px;font-size:14px}
+.row:last-child{border:0}.row span:last-child{white-space:nowrap;color:#668077}
+summary{cursor:pointer;font-weight:750;font-size:17px}details{margin-top:15px}
+#message{color:#216144;min-height:19px;font-size:13px;margin-top:7px}
+dialog{border:0;border-radius:20px;width:min(93%,440px);padding:22px;color:#20372f}
+dialog::backdrop{background:#112e2588}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.chips button{padding:10px 12px;background:#e7f0e9;color:#204638}
+.chips button.selected{background:#184e42;color:#fff}
+.privacy{background:#ecf4ed;padding:13px;border-radius:12px;font-size:12px;color:#425e4f}
+@media(min-width:620px){.forms{display:grid;grid-template-columns:1fr 1fr;gap:15px;align-items:start}}
+</style></head>
+<body><main><header><h1>Mi Cambio 🌱</h1><small>Tabaco, alimentación y peso · un paso cada día</small></header>
+<section class="hero"><small>CIGARRILLOS REGISTRADOS HOY</small><div class="number" id="count">0</div><button id="smoke" class="big">＋ He fumado uno</button><button id="undo" class="under">Deshacer último registro</button></section>
+<div class="metrics"><div class="metric"><small>Últimos 7 días</small><b id="week">0</b><small>cigarrillos registrados</small></div><div class="metric"><small>Desde el último</small><b id="since">—</b><small>sin registrar otro</small></div></div>
+<div class="forms"><section class="box"><h2>🍽️ Registrar comida</h2><form id="mealForm"><label for="mealType">Tipo</label><select id="mealType"><option>Desayuno</option><option>Media mañana</option><option selected>Comida</option><option>Merienda</option><option>Cena</option><option>Picoteo</option></select><label for="mealText">¿Qué has comido?</label><input id="mealText" required maxlength="240" placeholder="Ej.: bocadillo de jamón"><button class="primary" style="margin-top:12px">Guardar comida</button></form></section>
+<section class="box"><h2>⚖️ Registrar peso</h2><form id="weightForm"><label for="weight">Peso en kilogramos</label><input id="weight" inputmode="decimal" type="number" min="20" max="400" step="0.1" placeholder="Ej.: 94,5" required><button class="primary" style="margin-top:12px">Guardar peso</button></form><p class="muted" id="lastWeight">Aún no has registrado tu peso.</p></section></div>
+<section class="box"><h2>Actividad de hoy</h2><div id="activity" class="muted">Todavía no hay registros.</div></section>
+<details class="box"><summary>📆 Historial</summary><label for="chosenDate">Consultar fecha</label><input type="date" id="chosenDate"><div id="history"></div></details>
+<section class="box"><h2>🤝 Compartir con tu coach</h2><p class="muted">Aquí tienes el resumen de 7 días. Puedes enviármelo por ChatGPT para que adapte tu seguimiento.</p><textarea id="summary" aria-label="Resumen de seguimiento" readonly></textarea><div class="controls"><button id="share" class="primary" type="button">Compartir resumen</button><button id="select" class="secondary" type="button">Seleccionar texto</button></div></section>
+<details class="box"><summary>💾 Copias de seguridad y datos</summary><p class="privacy">Tus registros se guardan solo en este navegador. No se envían automáticamente a ChatGPT ni a un servidor. Si borras los datos del navegador o cambias de teléfono podrías perderlos: descarga una copia periódicamente.</p>
+<div class="controls"><button id="backup" class="secondary" type="button">Descargar copia</button><label class="secondary" style="padding:13px 15px;border-radius:13px;cursor:pointer;margin:0">Restaurar copia<input id="restore" style="display:none" type="file" accept=".json,application/json"></label><button id="clear" class="secondary" type="button">Borrar registros</button></div></details>
+<p id="message" role="status"></p><footer><small>Tu primer objetivo es observar tus hábitos. No necesitas hacerlo perfecto.</small></footer></main>
+<dialog id="reasonDialog"><h2>✅ Cigarrillo registrado</h2><p>¿Qué lo desencadenó? (Opcional)</p><div class="chips" id="reasons"><button data-r="Café">☕ Café</button><button data-r="Estrés">😮‍💨 Estrés</button><button data-r="Pausa">⏸️ Pausa</button><button data-r="Después de comer">🍽️ Comida</button><button data-r="Aburrimiento">💭 Aburrimiento</button><button data-r="Otro">Otro</button></div><div class="controls"><button class="primary" id="reasonDone">Listo</button></div></dialog>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id),KEY='mi-cambio-v2',blank=()=>({cigarettes:[],meals:[],weights:[]});
+let data=blank(),recent=null,store=true;
+try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&Array.isArray(d.cigarettes)&&Array.isArray(d.meals)&&Array.isArray(d.weights))data=d;}catch(e){store=false;}
+const date=t=>{const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const now=()=>new Date().toISOString(),today=()=>date(new Date()),clock=t=>new Date(t).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+const esc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const entries=d=>[...data.cigarettes.filter(x=>date(x.t)===d).map(x=>({t:x.t,s:'🚬 Cigarrillo'+(x.reason?' · '+x.reason:'')})),...data.meals.filter(x=>date(x.t)===d).map(x=>({t:x.t,s:'🍽️ '+x.type+' · '+x.desc})),...data.weights.filter(x=>date(x.t)===d).map(x=>({t:x.t,s:'⚖️ '+x.kg+' kg'}))].sort((a,b)=>b.t.localeCompare(a.t));
+const count=d=>data.cigarettes.filter(x=>date(x.t)===d).length;
+const notify=s=>{$('message').textContent=s};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data));store=true}catch(e){store=false;notify('No se puede guardar en este navegador. Descarga una copia de los registros.')}};
+const past=n=>{let d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()-n);return date(d)};
+function render(){
+$('count').textContent=count(today());
+$('week').textContent=Array.from({length:7},(_,i)=>count(past(i))).reduce((a,b)=>a+b,0);
+let last=[...data.cigarettes].sort((a,b)=>b.t.localeCompare(a.t))[0];let mins=last?Math.max(0,Math.floor((Date.now()-Date.parse(last.t))/60000)):null;
+$('since').textContent=mins===null?'—':mins<60?mins+' min':mins<1440?Math.floor(mins/60)+' h':Math.floor(mins/1440)+' d';
+$('undo').disabled=!data.cigarettes.length;
+const listing=items=>items.length?items.map(x=>'<div class="row"><span>'+esc(x.s)+'</span><span>'+esc(clock(x.t))+'</span></div>').join(''):'<p class="muted">Sin registros ese día.</p>';
+$('activity').innerHTML=listing(entries(today()));$('history').innerHTML=listing(entries($('chosenDate').value||today()));
+const w=[...data.weights].sort((a,b)=>b.t.localeCompare(a.t))[0];$('lastWeight').textContent=w?'Último peso: '+w.kg+' kg':'Aún no has registrado tu peso.';
+const ds=Array.from({length:7},(_,i)=>past(6-i));const cs=data.cigarettes.filter(x=>ds.includes(date(x.t)));const ms=data.meals.filter(x=>ds.includes(date(x.t)));const ws=data.weights.filter(x=>ds.includes(date(x.t)));
+let reasons={};cs.forEach(x=>{if(x.reason)reasons[x.reason]=(reasons[x.reason]||0)+1});
+$('summary').value='MI CAMBIO · ÚLTIMOS 7 DÍAS\n'+ds.map(d=>d+': '+count(d)+' cigarrillos').join('\n')+'\nTotal registrados: '+cs.length+'\nMotivos: '+(Object.entries(reasons).map(([k,v])=>k+' ('+v+')').join(', ')||'sin datos')+'\nComidas:\n'+(ms.map(x=>date(x.t)+' '+x.type+': '+x.desc).join('\n')||'sin datos')+'\nPeso:\n'+(ws.map(x=>date(x.t)+' '+x.kg+' kg').join('\n')||'sin datos')+'\nLos días sin registros no equivalen a cero cigarrillos.';
+}
+$('smoke').addEventListener('click',()=>{recent=now();data.cigarettes.push({t:recent,reason:''});save();render();$('reasonDialog').showModal();$('reasons').querySelectorAll('button').forEach(b=>b.classList.remove('selected'))});
+$('reasons').addEventListener('click',e=>{const b=e.target.closest('button[data-r]');if(!b)return;const c=data.cigarettes.find(x=>x.t===recent);if(!c)return;c.reason=b.dataset.r;save();render();$('reasons').querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===b))});
+$('reasonDone').addEventListener('click',()=>$('reasonDialog').close());
+$('undo').addEventListener('click',()=>{if(!data.cigarettes.length)return;data.cigarettes.sort((a,b)=>a.t.localeCompare(b.t));data.cigarettes.pop();save();render();notify('Último cigarrillo eliminado')});
+$('mealForm').addEventListener('submit',e=>{e.preventDefault();const desc=$('mealText').value.trim();if(!desc)return;data.meals.push({t:now(),type:$('mealType').value,desc:desc.slice(0,240)});save();$('mealText').value='';render();notify('Comida guardada')});
+$('weightForm').addEventListener('submit',e=>{e.preventDefault();const kg=Number($('weight').value);if(!Number.isFinite(kg)||kg<20||kg>400)return notify('Introduce un peso válido');data.weights.push({t:now(),kg:Math.round(kg*10)/10});save();$('weight').value='';render();notify('Peso guardado')});
+$('chosenDate').value=today();$('chosenDate').addEventListener('change',render);
+$('share').addEventListener('click',async()=>{const s=$('summary').value;if(navigator.share){try{await navigator.share({title:'Mi Cambio',text:s});return}catch(e){if(e.name==='AbortError')return}}$('summary').focus();$('summary').select();notify('Resumen seleccionado: copia y pega en ChatGPT')});
+$('select').addEventListener('click',()=>{$('summary').focus();$('summary').select();notify('Texto seleccionado: copia y pega en ChatGPT')});
+$('backup').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({version:2,...data},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='mi-cambio-copia-'+today()+'.json';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500);notify('Copia descargada')});
+$('restore').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{if(f.size>5000000)throw Error('Archivo demasiado grande');const d=JSON.parse(await f.text());if(!d||!['cigarettes','meals','weights'].every(k=>Array.isArray(d[k]))||[...d.cigarettes,...d.meals,...d.weights].some(x=>!x.t||!Number.isFinite(Date.parse(x.t))))throw Error('Archivo no válido');if(!confirm('¿Sustituir tus datos por esta copia?'))return;data={cigarettes:d.cigarettes,meals:d.meals,weights:d.weights};save();render();notify('Copia restaurada')}catch(err){notify('Error al restaurar la copia: '+err.message)}finally{e.target.value=''}});
+$('clear').addEventListener('click',()=>{if(confirm('¿Borrar todos los registros de este navegador?')){data=blank();save();render();notify('Registros borrados')}});
+render();setInterval(()=>{if($('chosenDate').value===today())render()},60000);if(!store)notify('Aviso: el navegador no permite guardar registros.');
+})();
+</script></body></html>
